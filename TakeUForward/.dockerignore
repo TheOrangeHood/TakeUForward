@@ -1,0 +1,17 @@
+# Ignore version control files
+.git
+.gitignore
+
+# Ignore Python bytecode files
+__pycache__/
+*.pyc
+
+# Ignore Docker-related files
+Dockerfile
+.dockerignore
+
+# Ignore other temporary or unnecessary files
+*.log
+*.pot
+*.po
+*.mo

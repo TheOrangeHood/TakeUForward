@@ -1,0 +1,48 @@
+version: '3'
+services:
+  backend:
+      build: 
+        context: ./TakeUForward
+        dockerfile: Dockerfile
+      container_name: takeuforward_backend
+      command: python manage.py runserver 0.0.0.0:8000
+      restart: always
+      volumes:
+        - ./TakeUForward:/app/TakeUForward
+      ports:
+        - "8000:8000"
+      depends_on:
+        - db
+        - redis
+  db:
+    image: mysql:8.3.0
+    container_name: takeuforward_mysql
+    restart: always
+    volumes:
+      - ./data/mysql/db:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: 'takeuforward_db'
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'true'
+  
+  redis:
+    image: redis:6.2
+    container_name: takeuforward_redis
+    restart: always
+    ports:
+      - "6379:6379"
+
+  frontend:
+    build:
+      context: ./TUFfrontend
+      dockerfile: Dockerfile
+    container_name: takeuforward_frontend
+    restart: always
+    ports:
+      - "8080:8080"
+    depends_on:
+      - backend
+
+volumes:
+  db_data:
